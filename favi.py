@@ -5,6 +5,7 @@ import requests
 from bs4 import BeautifulSoup
 from cStringIO import StringIO
 from flask import Flask, send_file
+from restless.exceptions import NotFound
 from restless.fl import FlaskResource
 from urlparse import urlparse, urljoin
 
@@ -58,13 +59,16 @@ class FaviResource(FlaskResource):
         return DEBUG
 
     def build_response(self, data, status=200):
-        if self.request.args.get('file', 'False') == 'True':
+        if status == 200 and self.request.args.get('file', 'False') == 'True':
             try:
                 response_value = json.loads(data)
                 favicon_url = response_value['favicon_url']
                 image_file = StringIO(requests.get(favicon_url).content)
             except:
-                pass
+                err = NotFound(
+                    'No favicon could be retrieved for {}.'.format(
+                        response_value['url']))
+                return self.build_error(err)
             else:
                 return send_file(image_file, mimetype='image/x-icon')
 
