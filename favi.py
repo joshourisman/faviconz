@@ -56,7 +56,7 @@ class FaviResource(FlaskResource):
         }
 
     def bubble_exceptions(self):
-        return DEBUG
+        return self.is_debug()
 
     def build_response(self, data, status=200):
         if status == 200 and self.request.args.get('file', 'False') == 'True':
