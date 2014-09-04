@@ -59,11 +59,14 @@ class FaviResource(FlaskResource):
 
     def build_response(self, data, status=200):
         if self.request.args.get('file', 'False') == 'True':
-            response_value = json.loads(data)
-            favicon_url = response_value['favicon_url']
-            image_file = StringIO(requests.get(favicon_url).content)
-
-            return send_file(image_file, mimetype='image/x-icon')
+            try:
+                response_value = json.loads(data)
+                favicon_url = response_value['favicon_url']
+                image_file = StringIO(requests.get(favicon_url).content)
+            except:
+                pass
+            else:
+                return send_file(image_file, mimetype='image/x-icon')
 
         return super(FaviResource, self).build_response(data, status=status)
 
