@@ -1,3 +1,4 @@
+import os
 import requests
 
 from bs4 import BeautifulSoup
@@ -6,6 +7,8 @@ from restless.fl import FlaskResource
 from urlparse import urlparse, urljoin
 
 app = Flask(__name__)
+
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 
 class FaviResource(FlaskResource):
@@ -40,4 +43,4 @@ class FaviResource(FlaskResource):
 FaviResource.add_url_rules(app, '/api/v1/favicons/')
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=DEBUG)
