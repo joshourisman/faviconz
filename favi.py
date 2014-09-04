@@ -13,6 +13,19 @@ app = Flask(__name__)
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 
+@app.route("/")
+def index():
+    try:
+        version = open(
+            os.path.join(
+                os.path.dirname(os.path.abspath(__file__)),
+                'VERSION')).read().strip()
+    except:
+        version = ''
+    finally:
+        return "Faviconz {}".format(version)
+
+
 class FaviResource(FlaskResource):
     def detail(self, pk):
         parsed_url = urlparse(pk)
