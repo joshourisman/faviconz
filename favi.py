@@ -5,12 +5,26 @@ import requests
 from bs4 import BeautifulSoup
 from cStringIO import StringIO
 from flask import Flask, send_file
+from restless.exceptions import NotFound
 from restless.fl import FlaskResource
 from urlparse import urlparse, urljoin
 
 app = Flask(__name__)
 
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
+
+
+@app.route("/")
+def index():
+    try:
+        version = open(
+            os.path.join(
+                os.path.dirname(os.path.abspath(__file__)),
+                'VERSION')).read().strip()
+    except:
+        version = ''
+    finally:
+        return "Faviconz {}".format(version)
 
 
 class FaviResource(FlaskResource):
@@ -42,15 +56,21 @@ class FaviResource(FlaskResource):
         }
 
     def bubble_exceptions(self):
-        return DEBUG
+        return self.is_debug()
 
     def build_response(self, data, status=200):
-        if self.request.args.get('file', 'False') == 'True':
-            response_value = json.loads(data)
-            favicon_url = response_value['favicon_url']
-            image_file = StringIO(requests.get(favicon_url).content)
-
-            return send_file(image_file, mimetype='image/x-icon')
+        if status == 200 and self.request.args.get('file', 'False') == 'True':
+            try:
+                response_value = json.loads(data)
+                favicon_url = response_value['favicon_url']
+                image_file = StringIO(requests.get(favicon_url).content)
+            except:
+                err = NotFound(
+                    'No favicon could be retrieved for {}.'.format(
+                        response_value['url']))
+                return self.build_error(err)
+            else:
+                return send_file(image_file, mimetype='image/x-icon')
 
         return super(FaviResource, self).build_response(data, status=status)
 
