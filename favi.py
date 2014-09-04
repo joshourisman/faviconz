@@ -39,6 +39,9 @@ class FaviResource(FlaskResource):
             'favicon_url': favicon_url,
         }
 
+    def bubble_exceptions(self):
+        return DEBUG
+
 
 FaviResource.add_url_rules(app, '/api/v1/favicons/')
 
