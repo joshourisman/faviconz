@@ -1,8 +1,10 @@
+import json
 import os
 import requests
 
 from bs4 import BeautifulSoup
-from flask import Flask
+from cStringIO import StringIO
+from flask import Flask, send_file
 from restless.fl import FlaskResource
 from urlparse import urlparse, urljoin
 
@@ -41,6 +43,16 @@ class FaviResource(FlaskResource):
 
     def bubble_exceptions(self):
         return DEBUG
+
+    def build_response(self, data, status=200):
+        if self.request.args.get('file', 'False') == 'True':
+            response_value = json.loads(data)
+            favicon_url = response_value['favicon_url']
+            image_file = StringIO(requests.get(favicon_url).content)
+
+            return send_file(image_file, mimetype='image/x-icon')
+
+        return super(FaviResource, self).build_response(data, status=status)
 
 
 FaviResource.add_url_rules(app, '/api/v1/favicons/')
