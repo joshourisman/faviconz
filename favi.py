@@ -4,7 +4,7 @@ import requests
 
 from bs4 import BeautifulSoup
 from cStringIO import StringIO
-from flask import Flask, send_file
+from flask import Flask, send_file, render_template
 from restless.exceptions import NotFound
 from restless.fl import FlaskResource
 from urlparse import urlparse, urljoin
@@ -16,15 +16,7 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 @app.route("/")
 def index():
-    try:
-        version = open(
-            os.path.join(
-                os.path.dirname(os.path.abspath(__file__)),
-                'VERSION')).read().strip()
-    except:
-        version = ''
-    finally:
-        return "Faviconz {}".format(version)
+    return render_template('index.html')
 
 
 class FaviResource(FlaskResource):
