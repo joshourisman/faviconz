@@ -1,8 +1,12 @@
 require('bootstrap/dist/css/bootstrap.css')
 
+_ = require 'lodash-node'
 React = require 'react'
 keyMirror = require 'react/lib/keyMirror'
 Fluxxor = require 'fluxxor'
+
+bs = require 'react-bootstrap'
+Button = bs.Button
 
 constants = keyMirror
     LOAD_FAVI: null
@@ -14,7 +18,8 @@ constants = keyMirror
 FaviStore = Fluxxor.createStore
     initialize: () ->
         @newDomainText = ''
-        @favis = []
+        @validDomain = false
+        @favis = {}
 
         @bindActions(
             constants.LOAD_FAVI, @onLoadFavi,
@@ -24,12 +29,14 @@ FaviStore = Fluxxor.createStore
         )
 
     onLoadFavi: (payload) ->
-        @favis.push payload
+        @favis[payload] =
+            domain: payload
         @newDomainText = ''
         @emit 'change'
 
     onUpdateDomain: (payload) ->
         @newDomainText = payload.domain
+        @validDomain = true
         @emit 'change'
 
     onLoadFaviSuccess: (data) ->
@@ -40,6 +47,7 @@ FaviStore = Fluxxor.createStore
 
     getState: () ->
         newDomainText: @newDomainText
+        validDomain: @validDomain
         favis: @favis
 
 actions =
@@ -73,28 +81,35 @@ Application = React.createClass
     getStateFromFlux: () ->
         @getFlux().store("FaviStore").getState()
 
-    onSubmitForm: (e) ->
-        e.preventDefault()
+    loadFavi: () ->
         @getFlux().actions.loadFavi @state.newDomainText
 
     handleDomainTextChange: (e) ->
         @getFlux().actions.updateDomain e.target.value
 
+    faviObjects: () ->
+        _.values @state.favis
+
     render: () ->
         version = window.version
+        buttonState = if @state.validDomain then '' else 'disabled="disabled"'
 
         <div>
             <h1>Favi.co.nz {version}</h1>
-            <form onSubmit={@onSubmitForm}>
-                http://<input type="text" placeholder="Domain"
-                       value={@state.newDomainText}
-                       onChange={@handleDomainTextChange} />
-                <input type="submit" value="Get Favicon" />
-            </form>
+            http://<input type="text" placeholder="Domain"
+                   value={@state.newDomainText}
+                   onChange={@handleDomainTextChange} />&nbsp;
+            <Button onClick={@loadFavi} bsStyle="primary">Get Favicon</Button>
             <ul>
-                {@state.favis.map (favi, i) ->
-                    <li key={i}>{favi}</li>}
+                {@faviObjects().map (favi, i) ->
+                    <Favi key={i} favi=favi />}
             </ul>
         </div>
+
+Favi = React.createClass
+    mixins: [FluxMixin]
+
+    render: () ->
+        <li>{@props.favi.domain}</li>
 
 React.renderComponent <Application flux={flux} />, document.getElementById('content')
