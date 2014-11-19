@@ -1,3 +1,5 @@
+require('bootstrap/dist/css/bootstrap.css')
+
 React = require 'react'
 
 MainContainer = React.createClass
