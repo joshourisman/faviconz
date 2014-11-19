@@ -29,8 +29,9 @@ FaviStore = Fluxxor.createStore
         )
 
     onLoadFavi: (payload) ->
-        @favis[payload] =
-            domain: payload
+        @favis[payload.domain] =
+            domain: payload.domain
+            favicon_url: 'loading…'
         @newDomainText = ''
         @emit 'change'
 
@@ -41,9 +42,14 @@ FaviStore = Fluxxor.createStore
 
     onLoadFaviSuccess: (data) ->
         console.log data
+        console.log @favis
+        @favis[data.url]['favicon_url'] = data.favicon_url
+        @emit 'change'
 
-    onLoadFaviFail: (err) ->
-        console.log err
+    onLoadFaviFail: (domain) ->
+        console.log @favis
+        @favis[domain]['favicon_url'] = 'failed to load.'
+        @emit 'change'
 
     getState: () ->
         newDomainText: @newDomainText
@@ -60,7 +66,7 @@ actions =
             success: (data) =>
                 @dispatch constants.LOAD_FAVI_SUCCESS, data
             error: (xhr, status, err) =>
-                @dispatch constants.LOAD_FAVI_FAIL, err
+                @dispatch constants.LOAD_FAVI_FAIL, domain
 
     updateDomain: (domain) ->
         @dispatch constants.UPDATE_DOMAIN, {domain: domain}
@@ -110,6 +116,6 @@ Favi = React.createClass
     mixins: [FluxMixin]
 
     render: () ->
-        <li>{@props.favi.domain}</li>
+        <li>{@props.favi.domain}: {@props.favi.favicon_url}</li>
 
 React.renderComponent <Application flux={flux} />, document.getElementById('content')
