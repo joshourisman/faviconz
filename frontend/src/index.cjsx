@@ -4,6 +4,8 @@ React = require 'react'
 
 MainContainer = React.createClass
     render: () ->
-        <h1>Favi.co.nz</h1>
+        version = window.version
+
+        <h1>Favi.co.nz {version}</h1>
 
 React.renderComponent <MainContainer />, document.getElementById('content')

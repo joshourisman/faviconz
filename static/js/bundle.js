@@ -1,7 +1,7 @@
 !function(e){function t(n){if(o[n])return o[n].exports;var r=o[n]={exports:{},id:n,loaded:!1};return e[n].call(r.exports,r,r.exports,t),r.loaded=!0,r.exports}var o={};return t.m=e,t.c=o,t.p="/static/",t(0)}([/*!************************!*\
   !*** ./src/index.cjsx ***!
   \************************/
-function(e,t,o){var n,r;o(/*! bootstrap/dist/css/bootstrap.css */147),r=o(/*! react */145),n=r.createClass({render:function(){return r.createElement("h1",null,"Favi.co.nz")}}),r.renderComponent(r.createElement(n,null),document.getElementById("content"))},/*!**********************************!*\
+function(e,t,o){var n,r;o(/*! bootstrap/dist/css/bootstrap.css */147),r=o(/*! react */145),n=r.createClass({render:function(){var e;return e=window.version,r.createElement("h1",null,"Favi.co.nz ",e)}}),r.renderComponent(r.createElement(n,null),document.getElementById("content"))},/*!**********************************!*\
   !*** ./~/react/lib/invariant.js ***!
   \**********************************/
 function(e){"use strict";var t=function(e,t,o,n,r,i,a,l){if(!e){var s;if(void 0===t)s=new Error("Minified exception occurred; use the non-minified dev environment for the full error message and additional helpful warnings.");else{var c=[o,n,r,i,a,l],d=0;s=new Error("Invariant Violation: "+t.replace(/%s/g,function(){return c[d++]}))}throw s.framesToPop=1,s}};e.exports=t},/*!**************************************!*\
