@@ -1,3 +1,4 @@
+import json
 import os
 import re
 
@@ -46,6 +47,11 @@ def version(part="+major"):
             groups[part_type] -= 1
 
     new_version = format_version(groups)
+
+    package_file = open('frontend/package.json', 'rw')
+    package = json.load(package_file)
+    package['version'] = new_version
+    json.dump(package, package_file)
 
     f = open(path, 'w')
     f.write(new_version)
