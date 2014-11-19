@@ -119,6 +119,8 @@ Favi = React.createClass
             content = 'loading…'
         else if not @props.favi.succeeded
             content = 'failed to load.'
+        else if @props.favi.favicon_url is null
+            content = 'no favicon available.'
         else
             content = <img src={@props.favi.favicon_url} />
 
