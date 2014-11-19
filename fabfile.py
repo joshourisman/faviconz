@@ -48,10 +48,9 @@ def version(part="+major"):
 
     new_version = format_version(groups)
 
-    package_file = open('frontend/package.json', 'rw')
-    package = json.load(package_file)
+    package = json.load(open('frontend/package.json', 'r'))
     package['version'] = new_version
-    json.dump(package, package_file)
+    json.dump(package, open('frontend/package.json', 'w'), indent=2)
 
     f = open(path, 'w')
     f.write(new_version)
