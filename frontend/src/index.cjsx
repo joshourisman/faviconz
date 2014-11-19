@@ -75,8 +75,6 @@ stores =
     FaviStore: new FaviStore()
 
 flux = new Fluxxor.Flux stores, actions
-flux.on "dispatch", (type, payload) ->
-    console.log "[Dispatch]", type, payload
 
 FluxMixin = Fluxxor.FluxMixin React
 StoreWatchMixin = Fluxxor.StoreWatchMixin
