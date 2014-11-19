@@ -86,7 +86,7 @@ Application = React.createClass
         <div>
             <h1>Favi.co.nz {version}</h1>
             <form onSubmit={@onSubmitForm}>
-                <input type="text" placeholder="Domain"
+                http://<input type="text" placeholder="Domain"
                        value={@state.newDomainText}
                        onChange={@handleDomainTextChange} />
                 <input type="submit" value="Get Favicon" />

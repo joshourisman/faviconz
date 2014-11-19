@@ -151,7 +151,7 @@
 	    version = window.version;
 	    return React.createElement("div", null, React.createElement("h1", null, "Favi.co.nz ", version), React.createElement("form", {
 	      "onSubmit": this.onSubmitForm
-	    }, React.createElement("input", {
+	    }, "http:\x2F\x2F", React.createElement("input", {
 	      "type": "text",
 	      "placeholder": "Domain",
 	      "value": this.state.newDomainText,
