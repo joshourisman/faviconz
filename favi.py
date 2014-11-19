@@ -16,7 +16,14 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 @app.route("/")
 def index():
-    return render_template('index.html')
+    try:
+        filename = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), 'VERSION')
+        version = open(filename).read().strip()
+    except:
+        version = ''
+
+    return render_template('index.html', version=version)
 
 
 class FaviResource(FlaskResource):
