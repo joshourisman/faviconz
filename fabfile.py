@@ -50,7 +50,7 @@ def version(part="+major"):
 
     package = json.load(open('frontend/package.json', 'r'))
     package['version'] = new_version
-    json.dump(package, open('frontend/package.json', 'w'))
+    json.dump(package, open('frontend/package.json', 'w'), indent=2)
 
     f = open(path, 'w')
     f.write(new_version)
