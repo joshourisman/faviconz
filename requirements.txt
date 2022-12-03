@@ -8,4 +8,4 @@ requests==2.4.0
 restless==2.0.1
 six==1.7.3
 waitress==0.8.9
-Werkzeug==0.9.6
+Werkzeug==0.15.3
