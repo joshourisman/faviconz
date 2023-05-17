@@ -1,6 +1,6 @@
 beautifulsoup4==4.3.2
 certifi==14.05.14
-Flask==1.0
+Flask==2.3.2
 itsdangerous==0.24
 Jinja2==2.11.3
 MarkupSafe==0.23
